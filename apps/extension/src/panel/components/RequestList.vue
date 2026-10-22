@@ -12,7 +12,7 @@ defineEmits<{
   select: [request: StreamRequest]
 }>()
 
-const ITEM_HEIGHT = 72
+const ITEM_HEIGHT = 80
 const scrollEl = ref<HTMLElement | null>(null)
 const itemsRef = toRef(props, 'requests')
 
@@ -113,7 +113,7 @@ function stateClass(state: StreamRequest['state']): string {
 }
 
 .state {
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -131,7 +131,7 @@ function stateClass(state: StreamRequest['state']): string {
 }
 
 .url {
-  font-size: 12px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -139,7 +139,7 @@ function stateClass(state: StreamRequest['state']): string {
 }
 
 .meta {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--sl-muted);
   margin-top: 4px;
 }

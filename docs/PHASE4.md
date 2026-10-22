@@ -3,7 +3,7 @@
 ## CDP metadata adapter (optional)
 
 - Settings → **启用 CDP 元数据**
-- On **Start Capture**, requests optional `debugger` permission and attaches CDP `Network` domain
+- On **Start Capture**, attaches CDP `Network` domain using the required `debugger` permission
 - Enriches existing injected requests (status / MIME) or adds **`source: cdp`** metadata-only rows when injection missed the request
 - Does **not** read streaming response bodies unless the body-stream prototype is enabled (below)
 

@@ -82,7 +82,7 @@ const statusLabel: Record<CaptureStatus, string> = {
 
 .meta {
   color: var(--sl-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .actions {
@@ -102,7 +102,7 @@ const statusLabel: Record<CaptureStatus, string> = {
 .badge {
   padding: 2px 8px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 12px;
   border: 1px solid var(--sl-border);
 }
 
@@ -118,7 +118,7 @@ const statusLabel: Record<CaptureStatus, string> = {
 
 .hint {
   color: var(--sl-muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .err {

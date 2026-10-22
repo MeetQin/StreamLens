@@ -86,7 +86,7 @@ async function copySummary(): Promise<void> {
 
 h3 {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 dl {

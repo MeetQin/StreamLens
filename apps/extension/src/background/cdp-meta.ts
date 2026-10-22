@@ -11,7 +11,6 @@ function debuggee(tabId: number): chrome.debugger.Debuggee {
   return { tabId }
 }
 
-/** Optional permissions keep the API namespace undefined until granted. */
 function hasDebuggerApi(): boolean {
   return typeof chrome.debugger !== 'undefined'
 }

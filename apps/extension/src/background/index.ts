@@ -225,15 +225,9 @@ chrome.runtime.onConnect.addListener((port) => {
           capturing: true,
           sessionId: t.session.sessionId,
         })
-        // CDP is optional: permission prompts or attach failures must not block capture.
+        // CDP is optional at runtime: attach failures must not block capture.
         if (getSettings().enableCdpMetadata || getSettings().enableCdpBodyStream) {
           try {
-            const granted = await chrome.permissions.request({ permissions: ['debugger'] })
-            if (!t.capturing) break
-            if (!granted) {
-              safePost(port, { type: 'CDP_STATE', error: 'debugger permission denied' })
-              break
-            }
             ensureCdpListener()
             const r = await attachCdp(tabId)
             if (!r.ok) {
@@ -242,7 +236,7 @@ chrome.runtime.onConnect.addListener((port) => {
           } catch (e) {
             safePost(port, {
               type: 'CDP_STATE',
-              error: e instanceof Error ? e.message : 'debugger permission request failed',
+              error: e instanceof Error ? e.message : 'CDP attach failed',
             })
           }
         }

@@ -2,17 +2,17 @@
 
 ## Capture scope
 
-| Scenario                         | Supported | Notes                                                            |
-| -------------------------------- | --------- | ---------------------------------------------------------------- |
-| `fetch` + streaming body         | Partial   | Heuristic on `Content-Type`, URL, `Accept`                       |
-| `EventSource`                    | Yes       | Standard + custom events via `addEventListener`                  |
-| XHR streaming                    | No        | Not hooked                                                       |
-| WebSocket                        | No        | Out of MVP scope                                                 |
-| Requests before capture + inject | No        | Reload after Start Capture                                       |
-| Page reload while capturing      | Yes       | Hooks are re-injected; in-flight requests are marked aborted     |
-| MV3 service worker restart       | Yes       | Capture state always; session snapshot requires `persistSession` |
-| Cross-tab aggregation            | No        | One inspected tab per DevTools panel                             |
-| CDP / debugger API               | Optional  | Metadata only (`enableCdpMetadata` + `debugger` permission)      |
+| Scenario                         | Supported | Notes                                                                |
+| -------------------------------- | --------- | -------------------------------------------------------------------- |
+| `fetch` + streaming body         | Partial   | Heuristic on `Content-Type`, URL, `Accept`                           |
+| `EventSource`                    | Yes       | Standard + custom events via `addEventListener`                      |
+| XHR streaming                    | No        | Not hooked                                                           |
+| WebSocket                        | No        | Out of MVP scope                                                     |
+| Requests before capture + inject | No        | Reload after Start Capture                                           |
+| Page reload while capturing      | Yes       | Hooks are re-injected; in-flight requests are marked aborted         |
+| MV3 service worker restart       | Yes       | Capture state always; session snapshot requires `persistSession`     |
+| Cross-tab aggregation            | No        | One inspected tab per DevTools panel                                 |
+| CDP / debugger API               | Optional  | Off by default; requires `debugger` permission (`enableCdpMetadata`) |
 
 ## Capture lifecycle
 

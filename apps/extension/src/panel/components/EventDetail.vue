@@ -54,13 +54,13 @@ async function copyRaw(): Promise<void> {
 h3,
 h4 {
   margin: 8px 0 4px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .meta {
   margin: 0;
   color: var(--sl-muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .block {

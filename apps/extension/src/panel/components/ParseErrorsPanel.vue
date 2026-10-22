@@ -37,7 +37,7 @@ defineEmits<{
 
 h3 {
   margin: 0 0 8px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .row {
@@ -59,7 +59,7 @@ h3 {
 
 .preview {
   grid-column: 2;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--sl-muted);
 }
 

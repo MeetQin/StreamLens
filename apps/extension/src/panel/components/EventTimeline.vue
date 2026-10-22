@@ -12,7 +12,7 @@ defineEmits<{
   select: [event: StreamEvent]
 }>()
 
-const ITEM_HEIGHT = 32
+const ITEM_HEIGHT = 34
 const scrollEl = ref<HTMLElement | null>(null)
 const itemsRef = toRef(props, 'events')
 
@@ -65,7 +65,7 @@ watch(itemsRef, () => measure(), { flush: 'post' })
 
 h3 {
   margin: 0 0 6px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .scroll {
@@ -88,7 +88,7 @@ h3 {
 
 .row {
   display: grid;
-  grid-template-columns: 48px 80px 1fr auto;
+  grid-template-columns: 48px 92px 1fr auto;
   gap: 8px;
   width: 100%;
   text-align: left;
@@ -119,14 +119,14 @@ h3 {
 
 .preview {
   font-family: ui-monospace, monospace;
-  font-size: 11px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .tag {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--sl-muted);
 }
 

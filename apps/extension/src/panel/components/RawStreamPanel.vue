@@ -43,7 +43,7 @@ async function copyAll(): Promise<void> {
 
 h3 {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 pre {
@@ -55,6 +55,6 @@ pre {
   border: 1px solid var(--sl-border);
   border-radius: 4px;
   white-space: pre-wrap;
-  font-size: 11px;
+  font-size: 13px;
 }
 </style>

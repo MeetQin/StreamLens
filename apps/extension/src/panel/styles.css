@@ -9,7 +9,7 @@
   --sl-danger: #dc2626;
   --sl-ok: #16a34a;
   font-family: system-ui, -apple-system, Segoe UI, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -68,5 +68,5 @@ select {
 
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12px;
+  font-size: 13px;
 }

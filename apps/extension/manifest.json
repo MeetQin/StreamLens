@@ -8,8 +8,7 @@
     "service_worker": "src/background/index.ts",
     "type": "module"
   },
-  "permissions": ["storage", "scripting"],
-  "optional_permissions": ["debugger"],
+  "permissions": ["storage", "scripting", "debugger"],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {
