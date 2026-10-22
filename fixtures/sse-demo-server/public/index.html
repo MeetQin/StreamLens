@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StreamLens SSE Demo</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      button {
+        margin-right: 8px;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+      }
+      pre {
+        background: #f4f4f5;
+        padding: 12px;
+        border-radius: 8px;
+        min-height: 120px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>StreamLens 测试页</h1>
+    <p>在 DevTools 打开 StreamLens，点击 Start Capture 后<strong>刷新本页</strong>（采集会自动延续），再点击下方按钮。</p>
+    <button id="fetchBtn">fetch 流式 SSE</button>
+    <button id="openaiBtn">OpenAI 风格 chat/completions</button>
+    <button id="esBtn">EventSource</button>
+    <button id="esCustomBtn">EventSource 自定义 progress</button>
+    <button id="clearBtn">清空日志</button>
+    <pre id="log"></pre>
+    <script>
+      const logEl = document.getElementById('log')
+      const log = (line) => {
+        logEl.textContent += line + '\n'
+      }
+      document.getElementById('clearBtn').onclick = () => {
+        logEl.textContent = ''
+      }
+      document.getElementById('fetchBtn').onclick = async () => {
+        log('fetch /api/sse …')
+        const res = await fetch('/api/sse')
+        const reader = res.body.getReader()
+        const dec = new TextDecoder()
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          log('chunk: ' + dec.decode(value))
+        }
+        log('fetch done')
+      }
+      document.getElementById('openaiBtn').onclick = async () => {
+        log('POST /v1/chat/completions …')
+        const res = await fetch('/v1/chat/completions', { method: 'POST', body: '{}' })
+        const reader = res.body.getReader()
+        const dec = new TextDecoder()
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          log('chunk: ' + dec.decode(value))
+        }
+        log('openai stream done')
+      }
+      document.getElementById('esCustomBtn').onclick = () => {
+        log('EventSource /api/eventsource-custom …')
+        const es = new EventSource('/api/eventsource-custom')
+        es.addEventListener('progress', (e) => log('progress: ' + e.data))
+        es.onerror = () => log('es custom closed')
+      }
+      document.getElementById('esBtn').onclick = () => {
+        log('EventSource /api/eventsource …')
+        const es = new EventSource('/api/eventsource')
+        es.onmessage = (e) => log('es message: ' + e.data)
+        es.onerror = () => log('es error/close')
+      }
+    </script>
+  </body>
+</html>

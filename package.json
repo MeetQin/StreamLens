@@ -1,0 +1,34 @@
+{
+  "name": "streamlens",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Chrome DevTools extension for debugging SSE and AI streaming responses",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "build:e2e": "pnpm --filter @streamlens/extension build:e2e",
+    "dev": "pnpm --filter @streamlens/extension dev",
+    "lint": "eslint \"packages/**/src/**/*.ts\" \"apps/extension/src/**/*.ts\" \"tests/**/*.ts\"",
+    "format": "prettier --check \"**/*.{ts,json,md}\" --ignore-path .gitignore",
+    "format:write": "prettier --write \"**/*.{ts,json,md}\" --ignore-path .gitignore",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test && pnpm run test:integration",
+    "test:integration": "vitest run -c vitest.integration.config.ts",
+    "test:e2e": "pnpm run build:e2e && cross-env RUN_E2E=1 playwright test",
+    "demo": "pnpm --filter @streamlens/sse-demo-server start",
+    "publish:sse-parser": "pnpm --filter @streamlens/sse-parser publish --access public --no-git-checks"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@playwright/test": "^1.49.1",
+    "@streamlens/core": "workspace:*",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
+  }
+}

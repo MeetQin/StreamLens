@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-streamlens-e2e="1">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StreamLens E2E</title>
+  </head>
+  <body>
+    <button id="run">Run SSE fetch</button>
+    <script>
+      const E2E = 'streamlens-e2e-page'
+      function startCapture() {
+        window.postMessage({ source: E2E, type: 'START_CAPTURE' }, '*')
+      }
+      function getSnapshot() {
+        return new Promise((resolve, reject) => {
+          const timer = setTimeout(() => reject(new Error('snapshot timeout')), 15_000)
+          const handler = (ev) => {
+            if (ev.data?.source === E2E && ev.data?.type === 'SNAPSHOT') {
+              clearTimeout(timer)
+              window.removeEventListener('message', handler)
+              resolve(ev.data.data)
+            }
+          }
+          window.addEventListener('message', handler)
+          window.postMessage({ source: E2E, type: 'GET_SNAPSHOT' }, '*')
+        })
+      }
+      document.getElementById('run').onclick = async () => {
+        try {
+          startCapture()
+          await new Promise((r) => setTimeout(r, 1000))
+          const res = await fetch('/api/sse')
+          const reader = res.body.getReader()
+          while (!(await reader.read()).done) {
+            /* drain */
+          }
+          await new Promise((r) => setTimeout(r, 800))
+          const snap = await getSnapshot()
+          window.__SL_SNAPSHOT__ = snap ?? { requests: [], note: 'empty snapshot' }
+        } catch (e) {
+          window.__SL_ERROR__ = String(e)
+          window.__SL_SNAPSHOT__ = { requests: [], error: String(e) }
+        }
+      }
+    </script>
+  </body>
+</html>

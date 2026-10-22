@@ -1,0 +1,72 @@
+:root {
+  color-scheme: light dark;
+  --sl-bg: #f5f5f5;
+  --sl-surface: #fff;
+  --sl-border: #ddd;
+  --sl-text: #222;
+  --sl-muted: #666;
+  --sl-accent: #2563eb;
+  --sl-danger: #dc2626;
+  --sl-ok: #16a34a;
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  font-size: 13px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sl-bg: #1e1e1e;
+    --sl-surface: #252526;
+    --sl-border: #3c3c3c;
+    --sl-text: #e4e4e4;
+    --sl-muted: #aaa;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+  background: var(--sl-bg);
+  color: var(--sl-text);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--sl-border);
+  background: var(--sl-surface);
+  color: var(--sl-text);
+  border-radius: 4px;
+  padding: 4px 10px;
+}
+
+button.primary {
+  background: var(--sl-accent);
+  border-color: var(--sl-accent);
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+select {
+  font: inherit;
+  border: 1px solid var(--sl-border);
+  background: var(--sl-surface);
+  color: var(--sl-text);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
