@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StreamLens npm 插件</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 760px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      button {
+        margin-right: 8px;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+      }
+      pre {
+        background: #f4f4f5;
+        padding: 12px;
+        border-radius: 8px;
+        min-height: 140px;
+        white-space: pre-wrap;
+        font-size: 12px;
+      }
+      .hint {
+        color: #555;
+      }
+      code {
+        background: #eee;
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>StreamLens npm 插件测试页</h1>
+    <p class="hint">
+      本页通过 ESM 加载 <code>/streamlens.js</code>，并调用 <code>installStreamLens()</code>。
+      页面右下角应出现调试面板；点击按钮观察 SSE / fetch 流被捕获。
+    </p>
+    <div>
+      <button id="fetchBtn">fetch 流式 SSE</button>
+      <button id="openaiBtn">OpenAI 风格</button>
+      <button id="esBtn">EventSource</button>
+      <button id="esCustomBtn">EventSource progress</button>
+      <button id="abortBtn">Abort 请求</button>
+      <button id="clearBtn">清空日志</button>
+    </div>
+    <p id="status" class="hint"></p>
+    <pre id="log"></pre>
+
+    <script type="module">
+      import { installStreamLens, VERSION } from '/streamlens.js'
+
+      const sl = installStreamLens({ open: true })
+      window.__streamlensDemo = sl
+
+      const logEl = document.getElementById('log')
+      const statusEl = document.getElementById('status')
+      const log = (line) => {
+        logEl.textContent += line + '\n'
+      }
+
+      document.getElementById('clearBtn').onclick = () => {
+        logEl.textContent = ''
+      }
+
+      document.getElementById('fetchBtn').onclick = async () => {
+        log('fetch /api/sse …')
+        const res = await fetch('/api/sse')
+        const reader = res.body.getReader()
+        const decoder = new TextDecoder()
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          log('chunk: ' + decoder.decode(value, { stream: true }))
+        }
+        log('fetch done')
+      }
+
+      document.getElementById('openaiBtn').onclick = async () => {
+        log('POST /v1/chat/completions …')
+        const res = await fetch('/v1/chat/completions', { method: 'POST', body: '{}' })
+        const reader = res.body.getReader()
+        while (!(await reader.read()).done) {
+          /* drain */
+        }
+        log('openai done')
+      }
+
+      document.getElementById('esBtn').onclick = () => {
+        log('EventSource /api/eventsource …')
+        const es = new EventSource('/api/eventsource')
+        es.onmessage = (event) => log('es message: ' + event.data)
+        es.onerror = () => {
+          log('es closed')
+          es.close()
+        }
+      }
+
+      document.getElementById('esCustomBtn').onclick = () => {
+        log('EventSource /api/eventsource-custom …')
+        const es = new EventSource('/api/eventsource-custom')
+        es.addEventListener('progress', (event) => log('progress: ' + event.data))
+        es.onerror = () => {
+          log('progress stream closed')
+          es.close()
+        }
+      }
+
+      document.getElementById('abortBtn').onclick = async () => {
+        log('fetch /api/sse with abort after 900 ms …')
+        const controller = new AbortController()
+        setTimeout(() => controller.abort(), 900)
+        try {
+          const res = await fetch('/api/sse', { signal: controller.signal })
+          const reader = res.body.getReader()
+          while (!(await reader.read()).done) {
+            /* drain until abort */
+          }
+        } catch (error) {
+          log('aborted: ' + error.name)
+        }
+      }
+
+      setInterval(() => {
+        const requests = sl.getRequests()
+        const events = requests.reduce((sum, request) => sum + request.eventCount, 0)
+        statusEl.textContent =
+          `StreamLens ${VERSION} · ${sl.isCapturing() ? '采集中' : '已暂停'} · ` +
+          `${requests.length} 请求 / ${events} 事件`
+      }, 500)
+    </script>
+  </body>
+</html>

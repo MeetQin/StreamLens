@@ -1,8 +1,8 @@
 {
-  "name": "streamlens",
+  "name": "streamlens-monorepo",
   "private": true,
   "version": "0.1.0",
-  "description": "Chrome DevTools extension for debugging SSE and AI streaming responses",
+  "description": "Debug SSE and AI streaming responses: npm in-page panel or Chrome DevTools extension",
   "scripts": {
     "build": "pnpm -r run build",
     "build:e2e": "pnpm --filter @streamlens/extension build:e2e",
@@ -15,6 +15,7 @@
     "test:integration": "vitest run -c vitest.integration.config.ts",
     "test:e2e": "pnpm run build:e2e && cross-env RUN_E2E=1 playwright test",
     "demo": "pnpm --filter @streamlens/sse-demo-server start",
+    "publish:streamlens": "pnpm --filter streamlens publish --access public --no-git-checks",
     "publish:sse-parser": "pnpm --filter @streamlens/sse-parser publish --access public --no-git-checks"
   },
   "engines": {

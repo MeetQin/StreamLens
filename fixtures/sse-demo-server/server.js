@@ -26,10 +26,30 @@ const server = http.createServer((req, res) => {
     return
   }
 
-  if (req.url === '/e2e.html') {
-    const html = fs.readFileSync(path.join(__dirname, 'public', 'e2e.html'), 'utf8')
+  if (
+    req.url === '/e2e.html' ||
+    req.url === '/npm.html' ||
+    req.url === '/npm-iife.html'
+  ) {
+    const file = req.url.slice(1)
+    const html = fs.readFileSync(path.join(__dirname, 'public', file), 'utf8')
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
     res.end(html)
+    return
+  }
+
+  if (/^\/streamlens(\.iife)?\.js(\.map)?$/.test(req.url)) {
+    const fileName = req.url.slice(1)
+    const filePath = path.join(__dirname, '../../packages/streamlens/dist', fileName)
+    if (!fs.existsSync(filePath)) {
+      res.writeHead(404)
+      res.end('Build the streamlens package first: pnpm --filter streamlens build')
+      return
+    }
+    res.writeHead(200, {
+      'Content-Type': fileName.endsWith('.map') ? 'application/json' : 'text/javascript',
+    })
+    res.end(fs.readFileSync(filePath))
     return
   }
 

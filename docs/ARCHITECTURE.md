@@ -8,9 +8,28 @@
 | Parser    | `packages/sse-parser`         | Incremental SSE parsing (no DOM/Chrome)                     |
 | Adapters  | `packages/adapters/ai-stream` | Vendor stream normalization                                 |
 | Core      | `packages/core`               | `CaptureSession`, metrics, export redaction                 |
+| In-page   | `packages/streamlens`         | npm plugin: page hooks, `CaptureController`, Shadow DOM UI  |
 | Extension | `apps/extension`              | MV3 background, content bridge, injected hooks, DevTools UI |
 
-## Message flow
+## In-page npm plugin
+
+`packages/streamlens` is the primary delivery target (`npm i streamlens`). It runs entirely in the page:
+
+```text
+Page (streamlens runtime)
+  fetch / EventSource hooks
+  → CaptureController (direct calls, 50 ms batching)
+  → CaptureSession (parser, adapters, redaction)
+  → Vue panel mounted in a Shadow DOM host
+```
+
+- No extension permissions or `chrome.*` APIs.
+- `installStreamLens()` is idempotent and stores the instance on `window.__streamlens`.
+- `destroy()` restores `fetch` / `EventSource` (unless another script wrapped them later) and unmounts the panel.
+- The UI is bundled with Vue and all workspace packages, so the published package has no runtime dependencies.
+- State is in-memory only; reloading the page clears captured data.
+
+## Extension message flow
 
 ```text
 Page (injected hooks)

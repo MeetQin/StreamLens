@@ -33,6 +33,14 @@
 - Background batches UI updates (~32ms).
 - Hard limits: max requests, events per request, event string length (configurable in Settings).
 
+## In-page npm plugin
+
+- Hooks only see requests started after `installStreamLens()`.
+- Captured data lives in page memory and is lost on reload/navigation.
+- Only the page context where the plugin is installed is observed; iframes need their own install.
+- `fetch` responses are re-wrapped as a new `Response`, so `response.url` / `redirected` may differ from the native response.
+- Stopping capture marks in-flight requests as `aborted`; the underlying stream is not cancelled by StreamLens.
+
 ## AI protocols
 
 - OpenAI-style `chat/completions` SSE is normalized; other vendors need new adapters in `packages/adapters/ai-stream`.

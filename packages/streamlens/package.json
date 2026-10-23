@@ -1,0 +1,65 @@
+{
+  "name": "streamlens",
+  "version": "0.1.1",
+  "description": "In-page devtools panel for debugging SSE and AI streaming responses — no browser extension required",
+  "author": {
+    "name": "MeetQin",
+    "url": "https://github.com/MeetQin"
+  },
+  "license": "MIT",
+  "keywords": [
+    "sse",
+    "server-sent-events",
+    "streaming",
+    "ai",
+    "devtools",
+    "debugging",
+    "openai",
+    "fetch",
+    "eventsource"
+  ],
+  "homepage": "https://github.com/MeetQin/StreamLens#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeetQin/StreamLens.git",
+    "directory": "packages/streamlens"
+  },
+  "bugs": {
+    "url": "https://github.com/MeetQin/StreamLens/issues"
+  },
+  "files": ["dist", "types", "README.md"],
+  "type": "module",
+  "main": "./dist/streamlens.js",
+  "module": "./dist/streamlens.js",
+  "types": "./types/index.d.ts",
+  "unpkg": "./dist/streamlens.iife.js",
+  "jsdelivr": "./dist/streamlens.iife.js",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/streamlens.js",
+      "default": "./dist/streamlens.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && node scripts/check-build.mjs",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@streamlens/adapters-ai-stream": "workspace:*",
+    "@streamlens/core": "workspace:*",
+    "@streamlens/protocol": "workspace:*",
+    "@streamlens/sse-parser": "workspace:*",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.1.10"
+  }
+}
